@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: b-tickets.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/users/?(.*)
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 3000
