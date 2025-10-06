@@ -5,12 +5,13 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
+  ingressClassName: nginx
   rules:
     - host: b-tickets.dev
       http:
         paths:
-          - pathType: Prefix
-            path: /api/users/?(.*)
+          - path: /api/users/?(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: auth-srv
