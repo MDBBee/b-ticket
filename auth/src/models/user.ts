@@ -7,7 +7,7 @@ interface UserAttributes {
 
 // Describes the properties of a User Model
 interface UserModel extends mongoose.Model<UserDoc> {
-  createUser(inputs: UserAttributes): UserDoc;
+  buildUser(inputs: UserAttributes): UserDoc;
 }
 
 // Describes the properties of a User Document
@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+userSchema.statics.buildUser = (inputs: UserAttributes) => {
+  return new User(inputs);
+};
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
