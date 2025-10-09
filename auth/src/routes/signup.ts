@@ -30,7 +30,10 @@ router.post(
       throw new BadRequestError('This Email is already in use!');
     }
 
-    const user = User.buildUser({ email, password });
+    const user = User.buildUser({
+      email: email.toLowerCase(),
+      password,
+    });
     await user.save();
 
     const userJwt = jwt.sign(

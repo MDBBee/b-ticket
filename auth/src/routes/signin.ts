@@ -1,6 +1,10 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { validateRequest } from '../middlewares/validate-request';
+import { User } from '../models/user';
+import { BadRequestError } from '../errors/badrequestError';
+import { Password } from '../utils/password';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -13,10 +17,30 @@ router.post(
   '/api/users/signin',
   signinValidation,
   validateRequest,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    res.send('Hi there-signin-user');
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (!existingUser) {
+      throw new BadRequestError('Invalid Log-in credential');
+    }
+
+    const isPasswordCorrect = await Password.compare(
+      existingUser.password,
+      password
+    );
+
+    if (!isPasswordCorrect) {
+      throw new BadRequestError('Invalid Log-in credential');
+    }
+
+    const userJwt = jwt.sign(
+      { id: existingUser.id, email: existingUser.email },
+      process.env.JWT_KEY as string
+    );
+    req.session = { jwt: userJwt };
+
+    res.status(200).send({ user: existingUser });
   }
 );
 
