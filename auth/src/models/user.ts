@@ -6,7 +6,7 @@ interface UserAttributes {
   password: string;
 }
 
-// Describes the properties of a User Model
+// Describes the properties and methods of a User Model
 interface UserModel extends mongoose.Model<UserDoc> {
   buildUser(inputs: UserAttributes): UserDoc;
 }
