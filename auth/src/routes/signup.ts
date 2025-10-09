@@ -1,10 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
-import { RequestValidationError } from '../errors/request-validation-error';
+import { body } from 'express-validator';
+
 import { User } from '../models/user';
 import { BadRequestError } from '../errors/badrequestError';
 import { Password } from '../utils/password';
 import jwt from 'jsonwebtoken';
+import { validateRequest } from '../middlewares/validate-request';
 
 const router = express.Router();
 
@@ -19,13 +20,8 @@ const signUpValidation = [
 router.post(
   '/api/users/signup',
   signUpValidation,
+  validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -33,8 +29,6 @@ router.post(
     if (existingUser) {
       throw new BadRequestError('This Email is already in use!');
     }
-
-    // Hash Password
 
     const user = User.buildUser({ email, password });
     await user.save();
