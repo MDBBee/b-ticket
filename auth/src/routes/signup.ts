@@ -3,7 +3,6 @@ import { body } from 'express-validator';
 
 import { User } from '../models/user';
 import { BadRequestError } from '../errors/badrequestError';
-import { Password } from '../utils/password';
 import jwt from 'jsonwebtoken';
 import { validateRequest } from '../middlewares/validate-request';
 
@@ -24,7 +23,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
 
     if (existingUser) {
       throw new BadRequestError('This Email is already in use!');

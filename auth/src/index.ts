@@ -28,7 +28,7 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
 
-app.all('*', (req: Request, res: Response) => {
+app.all('*', async (req: Request, res: Response) => {
   throw new NotFoundError();
 });
 app.use(errorHandler);
@@ -45,7 +45,7 @@ const start = async () => {
     console.error(error);
   }
 
-  app.listen(PORT, () => console.log(`Listening on port ${PORT} -- 🐳🐳`));
+  app.listen(PORT, () => console.log(`Listening on port ${PORT} -- 🐳🐳!!!`));
 };
 
 start();

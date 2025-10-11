@@ -6,12 +6,16 @@ interface UserAttributes {
   password: string;
 }
 
-// Describes the properties and methods of a User Model
+// Fuction:-> UserModel Describes the properties and methods of the entire User-Model for typing purposes.
+// Objective:-> To get type safety(or integrating typescript) when creating a new object/Document from the model/schema.
+// Description:-> Takes the props of the current moongoose schema and add this static method.
 interface UserModel extends mongoose.Model<UserDoc> {
   buildUser(inputs: UserAttributes): UserDoc;
 }
 
-// Describes the properties of a User Document
+// Fuction:-> Describes the properties of a User Document (object types/props after instatiation)
+// Description:-> Take the doc of a normal moongoose object and add these ones
+// Objective:-> To clearly distiguish between the before and after instatiation(the creation of a new document) properties of this model.
 interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
