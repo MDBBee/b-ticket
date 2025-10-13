@@ -15,3 +15,11 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
+    - image: bobbyugbebor/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'
