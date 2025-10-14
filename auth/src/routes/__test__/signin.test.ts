@@ -29,7 +29,7 @@ it('fails on signing in with an incorrect password', async () => {
     .expect(400);
 });
 
-it('a cookie is set on the headers after a successful signin', async () => {
+it('expects a cookie to be set on the headers after a successful signin', async () => {
   await request(app)
     .post('/api/users/signup')
     .send({
