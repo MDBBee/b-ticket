@@ -6,6 +6,8 @@ import { errorHandler, NotFoundError, currentUser } from '@b-tickets/common';
 
 import { createTicketRouter } from './routes/new';
 import { showTicketRouter } from './routes/showTicket';
+import { allTickestRouter } from './routes/allTickets';
+import { updateTicketRouter } from './routes/updateTickets';
 
 const app = express();
 
@@ -19,8 +21,11 @@ app.use(
 );
 
 app.use(currentUser);
+
 app.use(createTicketRouter);
 app.use(showTicketRouter);
+app.use(allTickestRouter);
+app.use(updateTicketRouter);
 
 app.all('*', async (req: Request, res: Response) => {
   throw new NotFoundError();
