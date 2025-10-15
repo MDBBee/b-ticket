@@ -1,11 +1,13 @@
 import nats from 'node-nats-streaming';
 
-const stan = nats.connect('ticketing', 'abc', {
+console.clear();
+const clientId = 'abc';
+const stan = nats.connect('ticketing', clientId, {
   url: 'http://localhost:4222',
 });
 
 stan.on('connect', () => {
-  console.log('Publisher connected to NATS');
+  console.log(`Publisher connected to NATS, ClientID: ${clientId}`);
 
   const data = JSON.stringify({
     id: '123',
