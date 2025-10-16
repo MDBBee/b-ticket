@@ -10,6 +10,16 @@ const stan = nats.connect('ticketing', clientId, {
 stan.on('connect', async () => {
   console.log(`Publisher connected to NATS, ClientID: ${clientId}`);
 
+  // Code refactored- start
+
+  const data1 = JSON.stringify({
+    id: '123',
+    title: 'concert4',
+    price: 20,
+  });
+  stan.publish('ticket:created', data1, () => {});
+  // Code refactored- end
+
   const data = {
     id: '123',
     title: 'concert4',
