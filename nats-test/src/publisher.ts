@@ -12,12 +12,13 @@ stan.on('connect', async () => {
 
   // Code refactored- start
 
-  const data1 = JSON.stringify({
-    id: '123',
-    title: 'concert4',
-    price: 20,
-  });
-  stan.publish('ticket:created', data1, () => {});
+  // const data1 = JSON.stringify({
+  //   id: '123',
+  //   title: 'concert4',
+  //   price: 20,
+  // });
+  // stan.publish('ticket:created', data1, () => {});
+
   // Code refactored- end
 
   const data = {

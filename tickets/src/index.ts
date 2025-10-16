@@ -18,6 +18,19 @@ const start = async () => {
       'yueghehg6767',
       'http://nats-srv:4222'
     );
+
+    // For gracefull exit of the client-start
+
+    const client = natsWrapper.client;
+    client.on('close', () => {
+      console.log('Nats connection closed');
+      process.exit();
+    });
+    process.on('SIGINT', () => client.close());
+    process.on('SIGTERM', () => client.close());
+
+    // For gracefull exit of the client-end
+
     await mongoose.connect(process.env.MONGO_URI);
   } catch (error) {
     console.error(error);
