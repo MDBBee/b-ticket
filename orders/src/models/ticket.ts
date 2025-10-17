@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { Order } from './order';
+import { Orderstatus } from '@b-tickets/common';
 
 // Typing assistance/hinting when creating a doc
 interface TicketAttributes {
@@ -6,10 +8,11 @@ interface TicketAttributes {
   price: number;
 }
 
-// typing for a doc to be created
+// Typing for a doc to be created
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  isReserved(): Promise<boolean>;
 }
 
 // Typing for the entire model
@@ -41,6 +44,22 @@ const ticketSchema = new mongoose.Schema(
 
 ticketSchema.statics.createTicket = (inputs: TicketAttributes) => {
   return new Ticket(inputs);
+};
+
+ticketSchema.methods.isReserved = async function () {
+  // Ticket reserved?:>query orders where ticketId=ticket.id&&>order.staus!=="cancelled">
+  const existingOrder = await Order.findOne({
+    ticket: this, //this-> the instance of Ticket
+    status: {
+      $in: [
+        Orderstatus.AwaitingPayment,
+        Orderstatus.Complete,
+        Orderstatus.Created,
+      ],
+    },
+  });
+
+  return existingOrder !== null;
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
