@@ -11,12 +11,21 @@ const start = async () => {
   if (!process.env.MONGO_URI) {
     throw new Error('MONGO_URI env var not found/defined...');
   }
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error('NATS_CLIENT_ID env var not found/defined...');
+  }
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error('NATS_CLUSTER_ID env var not found/defined...');
+  }
+  if (!process.env.NATS_URI) {
+    throw new Error('NATS_URI env var not found/defined...');
+  }
 
   try {
     await natsWrapper.connect(
-      'ticketing',
-      'yueghehg6767',
-      'http://nats-srv:4222'
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URI
     );
 
     // For gracefull exit of the client-start
