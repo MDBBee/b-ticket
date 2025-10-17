@@ -53,6 +53,7 @@ router.post(
       expiresAt: expiration,
       ticket,
     });
+    await order.save();
 
     // Publish an order created event
     res.status(201).send(order);
