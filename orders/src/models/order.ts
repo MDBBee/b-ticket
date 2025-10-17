@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
+import { Orderstatus } from '@b-tickets/common';
+import { TicketDoc } from './ticket';
 
 // Typing assistance/hinting when creating a doc
 interface OrderAttributes {
   userId: string;
-  status: string;
+  status: Orderstatus;
   expiresAt: Date;
   ticket: TicketDoc;
 }
@@ -11,7 +13,7 @@ interface OrderAttributes {
 // typing for a doc to be created
 interface OrderDoc extends mongoose.Document {
   userId: string;
-  status: string;
+  status: Orderstatus;
   expiresAt: Date;
   ticket: TicketDoc;
 }
@@ -30,6 +32,8 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      enum: Object.values(Orderstatus),
+      default: Orderstatus.Created,
     },
     expiresAt: {
       type: mongoose.Schema.Types.Date,
