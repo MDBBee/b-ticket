@@ -4,10 +4,10 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@b-tickets/common';
 
-import { createTicketRouter } from './routes/new';
-import { showTicketRouter } from './routes/showTicket';
-import { allTickestRouter } from './routes/allTickets';
-import { updateTicketRouter } from './routes/updateTickets';
+import { createOrderRouter } from './routes/new';
+import { showOrderRouter } from './routes/showOrder';
+import { allOrdersRouter } from './routes/allOrders';
+import { deleteOrderRouter } from './routes/deleteOrder';
 
 const app = express();
 
@@ -22,10 +22,10 @@ app.use(
 
 app.use(currentUser);
 
-app.use(createTicketRouter);
-app.use(showTicketRouter);
-app.use(allTickestRouter);
-app.use(updateTicketRouter);
+app.use(createOrderRouter);
+app.use(showOrderRouter);
+app.use(allOrdersRouter);
+app.use(deleteOrderRouter);
 
 app.all('*', async (req: Request, res: Response) => {
   throw new NotFoundError();

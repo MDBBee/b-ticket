@@ -13,7 +13,7 @@ spec:
         app: orders
     spec:
       containers:
-        - name: orders-depl
+        - name: orders
           image: bobbyugbebor/orders
           env:
             - name: NATS_CLIENT_ID
@@ -22,7 +22,7 @@ spec:
                   fieldPath: metadata.name
             - name: NATS_CLUSTER_ID
               value: ticketing
-            - name: NATS_URL
+            - name: NATS_URI
               value: 'http://nats-srv:4222'
             - name: MONGO_URI
               value: 'mongodb://orders-mongo-srv:27017/orders'

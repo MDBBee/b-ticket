@@ -22,7 +22,7 @@ spec:
                   fieldPath: metadata.name
             - name: NATS_CLUSTER_ID
               value: ticketing
-            - name: NATS_URL
+            - name: NATS_URI
               value: 'http://nats-srv:4222'
             - name: MONGO_URI
               value: 'mongodb://tickets-mongo-srv:27017/tickets'
