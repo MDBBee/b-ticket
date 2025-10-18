@@ -8,7 +8,7 @@ interface TicketAttributes {
   userId: string;
 }
 
-// A single output doc from the model
+// A single output doc for the model doc/instance
 interface TicketDocs extends mongoose.Document {
   title: string;
   price: number;

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Order } from './order';
 import { Orderstatus } from '@b-tickets/common';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 // Typing assistance/hinting when creating a doc
 interface TicketAttributes {
@@ -9,16 +10,21 @@ interface TicketAttributes {
   id: string;
 }
 
-// Typing for a doc to be created
+// Typing for a single doc/instance
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
 // Typing for the entire model
 interface TicketModel extends mongoose.Model<TicketDoc> {
   createTicket(input: TicketAttributes): TicketDoc;
+  findByEvent(event: {
+    id: string;
+    version: number;
+  }): Promise<TicketDoc | null>;
 }
 
 const ticketSchema = new mongoose.Schema(
@@ -43,14 +49,23 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
+// Resetting '__v' key name for output doc
+ticketSchema.set('versionKey', 'version');
 // Plugin for implementing versioning in mongoose
-// ticketSchema.plugin(updateIfCurrentPlugin);
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.createTicket = (inputs: TicketAttributes) => {
   return new Ticket({
     _id: inputs.id,
     title: inputs.title,
     price: inputs.price,
+  });
+};
+
+ticketSchema.statics.findByEvent = async (event) => {
+  return Ticket.findOne({
+    _id: event.id,
+    version: event.version - 1,
   });
 };
 

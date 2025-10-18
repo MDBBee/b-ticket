@@ -4,10 +4,10 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@b-tickets/common';
 
-import { createOrderRouter } from './routes/new';
-import { showOrderRouter } from './routes/showOrder';
-import { allOrdersRouter } from './routes/allOrders';
-import { deleteOrderRouter } from './routes/deleteOrder';
+import { createOrderRouter } from './routes/new-order';
+import { showOrderRouter } from './routes/show-order';
+import { allOrdersRouter } from './routes/all-orders';
+import { deleteOrderRouter } from './routes/delete-order';
 
 const app = express();
 
