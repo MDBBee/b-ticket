@@ -28,7 +28,7 @@ const start = async () => {
       process.env.NATS_URI
     );
 
-    // For gracefull exit of the client-start
+    // For gracefull exit of the client. --Start
 
     const client = natsWrapper.client;
     client.on('close', () => {
@@ -38,7 +38,7 @@ const start = async () => {
     process.on('SIGINT', () => client.close());
     process.on('SIGTERM', () => client.close());
 
-    // For gracefull exit of the client-end
+    // For gracefull exit of the client. --End
 
     await mongoose.connect(process.env.MONGO_URI);
   } catch (error) {

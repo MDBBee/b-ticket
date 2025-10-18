@@ -52,3 +52,20 @@ it('returns 201 for after successfully reserving a ticket', async () => {
 
   //   console.log('RES.FROM.NEWORDER', res.body);
 });
+
+it('publishes an order:created event', async () => {
+  const ticket = Ticket.createTicket({
+    title: 'bronx',
+    price: 200,
+  });
+  await ticket.save();
+
+  const user = signin();
+  const res = await request(app)
+    .post('/api/orders')
+    .set('Cookie', user)
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
