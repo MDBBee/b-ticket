@@ -43,6 +43,9 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
+// Plugin for implementing versioning in mongoose
+// ticketSchema.plugin(updateIfCurrentPlugin);
+
 ticketSchema.statics.createTicket = (inputs: TicketAttributes) => {
   return new Ticket({
     _id: inputs.id,

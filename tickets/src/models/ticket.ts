@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 // For Type hinting while creating a ticket
 interface TicketAttributes {
@@ -12,6 +13,7 @@ interface TicketDocs extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
+  version: number;
 }
 
 // The model and all it's properties
@@ -44,6 +46,11 @@ const ticketSchema = new mongoose.Schema(
     },
   }
 );
+
+// Resetting '__v' key name for output doc
+ticketSchema.set('versionKey', 'version');
+// Plugin for implementing versioning in mongoose
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 // Static method
 ticketSchema.statics.createTicket = (inputs: TicketAttributes) => {
