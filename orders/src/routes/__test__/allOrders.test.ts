@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { app } from '../../app';
-import { Order } from '../../models/order';
 import { Ticket } from '../../models/ticket';
 
 const createTicket = async (input: string) => {
@@ -54,6 +53,9 @@ it('returns a list of orders for a particular user', async () => {
     .get('/api/orders')
     .set('Cookie', user1)
     .expect(200);
+
+  expect(res2.body.length).toEqual(3);
+  expect(res1.body.length).toEqual(1);
 
   //   console.log('User2:', res2.body, 'USER1', res1.body, ticket4);
 });
