@@ -6,6 +6,7 @@ import { Orderstatus } from '@b-tickets/common';
 interface TicketAttributes {
   title: string;
   price: number;
+  id: string;
 }
 
 // Typing for a doc to be created
@@ -43,7 +44,11 @@ const ticketSchema = new mongoose.Schema(
 );
 
 ticketSchema.statics.createTicket = (inputs: TicketAttributes) => {
-  return new Ticket(inputs);
+  return new Ticket({
+    _id: inputs.id,
+    title: inputs.title,
+    price: inputs.price,
+  });
 };
 
 ticketSchema.methods.isReserved = async function () {
