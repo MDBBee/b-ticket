@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { TicketCreatedListerner } from './events/listeners/ticket-created-listener';
+import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
 
 const PORT = 3000;
 
@@ -29,7 +31,6 @@ const start = async () => {
     );
 
     // For gracefull exit of the client. --Start
-
     const client = natsWrapper.client;
     client.on('close', () => {
       console.log('Nats connection closed');
@@ -37,8 +38,12 @@ const start = async () => {
     });
     process.on('SIGINT', () => client.close());
     process.on('SIGTERM', () => client.close());
-
     // For gracefull exit of the client. --End
+
+    // Listeners --Start
+    new TicketCreatedListerner(client).listen();
+    new TicketUpdatedListener(client).listen();
+    // Listeners --End
 
     await mongoose.connect(process.env.MONGO_URI);
   } catch (error) {
