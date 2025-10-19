@@ -15,7 +15,7 @@ const preTestSetUp = async () => {
     userId: new mongoose.Types.ObjectId().toHexString(),
   };
   // @ts-ignore
-  const msg: Message = { ack: jest.fn };
+  const msg: Message = { ack: jest.fn() };
 
   return { listener, data, msg };
 };
@@ -30,7 +30,7 @@ it('creates and saves a ticket', async () => {
   expect(ticket?.price).toEqual(data.price);
 });
 
-it("acknowledges'acks' the message after a successful processing", async () => {
+it("acknowledges'acks' the message after a successful process", async () => {
   const { listener, data, msg } = await preTestSetUp();
   await listener.onMessage(data, msg);
 
