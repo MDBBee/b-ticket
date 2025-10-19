@@ -3,10 +3,12 @@ import { app } from '../../app';
 import { Order } from '../../models/order';
 import { Ticket } from '../../models/ticket';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose from 'mongoose';
 
 it('deletes/cancels an order by updating the order-status', async () => {
   // create a ticket
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'show',
     price: 40,
   });
@@ -40,6 +42,7 @@ it('deletes/cancels an order by updating the order-status', async () => {
 it('publishes a cancelled event', async () => {
   // create a ticket
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'show',
     price: 40,
   });

@@ -16,6 +16,7 @@ it('returns an error for non existent tickets', async () => {
 
 it('returns an error for reserved tickets', async () => {
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'bronx',
     price: 200,
   });
@@ -39,6 +40,7 @@ it('returns an error for reserved tickets', async () => {
 
 it('returns 201 for after successfully reserving a ticket', async () => {
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'bronx',
     price: 200,
   });
@@ -55,6 +57,7 @@ it('returns 201 for after successfully reserving a ticket', async () => {
 
 it('publishes an order:created event', async () => {
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'bronx',
     price: 200,
   });

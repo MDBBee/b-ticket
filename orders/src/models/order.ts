@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Orderstatus } from '@b-tickets/common';
 import { TicketDoc } from './ticket';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 // Typing assistance/hinting when creating a doc
 interface OrderAttributes {
@@ -10,15 +11,16 @@ interface OrderAttributes {
   ticket: TicketDoc;
 }
 
-// typing for a doc to be created
+// Ts for a single doc obj from the model
 interface OrderDoc extends mongoose.Document {
   userId: string;
   status: Orderstatus;
   expiresAt: Date;
   ticket: TicketDoc;
+  version: number;
 }
 
-// Typing for the entire model
+// Ts for the entire model
 interface OrderModel extends mongoose.Model<OrderDoc> {
   createOrder(input: OrderAttributes): OrderDoc;
 }
@@ -52,6 +54,11 @@ const orderSchema = new mongoose.Schema(
     },
   }
 );
+
+// Resetting '__v' key name for output doc
+orderSchema.set('versionKey', 'version');
+// Plugin for implementing versioning in mongoose
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.createOrder = (inputs: OrderAttributes) => {
   return new Order(inputs);

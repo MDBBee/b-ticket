@@ -2,10 +2,12 @@ import request from 'supertest';
 import { app } from '../../app';
 import { Order } from '../../models/order';
 import { Ticket } from '../../models/ticket';
+import mongoose from 'mongoose';
 
 it('fetches the order', async () => {
   // create a ticket
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'show',
     price: 40,
   });
@@ -31,6 +33,7 @@ it('fetches the order', async () => {
 it('returns an error whenever a user tries to fetch an order it did not create', async () => {
   // create a ticket
   const ticket = Ticket.createTicket({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'show',
     price: 40,
   });
