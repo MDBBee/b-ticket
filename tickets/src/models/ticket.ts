@@ -6,6 +6,7 @@ interface TicketAttributes {
   title: string;
   price: number;
   userId: string;
+  orderId?: string;
 }
 
 // A single output doc for the model doc/instance
@@ -14,6 +15,7 @@ interface TicketDocs extends mongoose.Document {
   price: number;
   userId: string;
   version: number;
+  orderId?: string;
 }
 
 // The model and all it's properties
@@ -36,6 +38,7 @@ const ticketSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    orderId: { type: String },
   },
   {
     toJSON: {
