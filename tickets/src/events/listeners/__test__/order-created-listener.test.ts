@@ -50,7 +50,7 @@ it('Acknowledges"acks" the message reception', async () => {
 });
 
 it('publishes a ticket update event to sync ticket version', async () => {
-  const { listener, ticket, data, msg } = await preTestSetup();
+  const { listener, data, msg } = await preTestSetup();
 
   await listener.onMessage(data, msg);
 
