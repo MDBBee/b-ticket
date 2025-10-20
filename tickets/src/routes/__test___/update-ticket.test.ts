@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import mongoose from 'mongoose';
 import { natsWrapper } from '../../nats-wrapper';
+import { Ticket } from '../../models/ticket';
 
 const createTicket = () => {
   return request(app)
@@ -96,4 +97,27 @@ it('publishes an event after a successful ticket creation', async () => {
     .expect(200);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
+
+it('throws a badrequest error when trying to update a reserved ticket', async () => {
+  const cookie = signin();
+
+  const res = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send({
+      title: 'burna show',
+      price: 40.5,
+    });
+  const ticketId = res.body.id;
+
+  const ticket = await Ticket.findById(ticketId);
+  ticket?.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
+  await ticket?.save();
+
+  await request(app)
+    .put(`/api/tickets/${ticketId}`)
+    .set('Cookie', cookie)
+    .send({ title: 'Wizzy Lokay', price: 100 })
+    .expect(400);
 });

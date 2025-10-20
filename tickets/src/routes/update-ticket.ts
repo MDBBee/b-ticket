@@ -4,6 +4,7 @@ import {
   validateRequest,
   NotAuthorizedError,
   NotFoundError,
+  BadRequestError,
 } from '@b-tickets/common';
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
@@ -30,6 +31,11 @@ router.put(
     if (!ticket) {
       throw new NotFoundError();
     }
+
+    if (ticket.orderId)
+      throw new BadRequestError(
+        'Ticket is been proccessed by a potential buyer'
+      );
 
     if (ticket.userId !== req.currentUser?.id) {
       throw new NotAuthorizedError();

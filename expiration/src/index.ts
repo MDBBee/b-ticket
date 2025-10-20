@@ -1,18 +1,7 @@
-import mongoose from 'mongoose';
-import { app } from './app';
-import { natsWrapper } from './nats-wrapper';
 import { OrderCreatedListener } from './events/listeners/order-created-listener';
-import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
-
-const PORT = 3000;
+import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
-  if (!process.env.JWT_KEY) {
-    throw new Error('JWT_KEY not found/defined...');
-  }
-  if (!process.env.MONGO_URI) {
-    throw new Error('MONGO_URI env var not found/defined...');
-  }
   if (!process.env.NATS_CLIENT_ID) {
     throw new Error('NATS_CLIENT_ID env var not found/defined...');
   }
@@ -42,15 +31,10 @@ const start = async () => {
 
     // Listeners --Start
     new OrderCreatedListener(natsWrapper.client).listen();
-    new OrderCancelledListener(natsWrapper.client).listen();
     // Listeners --End
-
-    await mongoose.connect(process.env.MONGO_URI);
   } catch (error) {
     console.error(error);
   }
-
-  app.listen(PORT, () => console.log(`Listening on port ${PORT} -- 🐳🐳!!!`));
 };
 
 start();

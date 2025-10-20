@@ -14,7 +14,7 @@ import { OrderCreatedPublisher } from '../events/publishers/order-created-publis
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
-const TICKET_RESERVE_EXPIRATION_TIME = 15 * 60;
+const TICKET_RESERVE_EXPIRATION_TIME = 30;
 
 const validationBody = [
   body('ticketId')
