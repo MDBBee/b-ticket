@@ -1,5 +1,6 @@
 import { Orderstatus } from '@b-tickets/common';
 import mongoose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 // For Type hinting while creating a ticket
 interface OrderAttributes {
@@ -38,6 +39,9 @@ const orderSchema = new mongoose.Schema(
     },
   }
 );
+
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.createOrder = (inputs: OrderAttributes) =>
   new Order({
