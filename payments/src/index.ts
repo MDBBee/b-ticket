@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 
 const PORT = 3000;
 
@@ -39,7 +41,8 @@ const start = async () => {
     // For gracefull exit of the client-end
 
     // Listeners --Start
-
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
     // Listeners --End
 
     await mongoose.connect(process.env.MONGO_URI);

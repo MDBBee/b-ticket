@@ -4,6 +4,8 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@b-tickets/common';
 
+import { paymentsRouter } from './routes/new-payment';
+
 const app = express();
 
 app.set('trust proxy', true);
@@ -16,6 +18,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(paymentsRouter);
 
 app.all('*', async (req: Request, res: Response) => {
   throw new NotFoundError();
