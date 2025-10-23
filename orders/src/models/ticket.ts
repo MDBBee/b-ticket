@@ -18,7 +18,7 @@ export interface TicketDoc extends mongoose.Document {
   isReserved(): Promise<boolean>;
 }
 
-// Typing for the entire model
+// Typing for the entire model.
 interface TicketModel extends mongoose.Model<TicketDoc> {
   createTicket(input: TicketAttributes): TicketDoc;
   findByEvent(event: {

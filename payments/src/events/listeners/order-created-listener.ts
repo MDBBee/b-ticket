@@ -1,9 +1,4 @@
-import {
-  Listener,
-  OrderCreatedEvent,
-  Orderstatus,
-  Subjects,
-} from '@b-tickets/common';
+import { Listener, OrderCreatedEvent, Subjects } from '@b-tickets/common';
 import { queueGroupName } from './queue-group-name';
 import { Message } from 'node-nats-streaming';
 import { Order } from '../../models/order';

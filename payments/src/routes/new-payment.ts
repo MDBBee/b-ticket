@@ -9,6 +9,8 @@ import {
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Order } from '../models/order';
+import { stripe } from '../stripe';
+import { Payment } from '../models/payment';
 
 const router = express.Router();
 
@@ -16,6 +18,9 @@ const validateInputs = [
   body('token').not().isEmpty(),
   body('orderId').not().isEmpty(),
 ];
+
+// stripe token for testing charges
+// const token = "tok_visa"
 
 router.post(
   '/api/payments',
@@ -32,7 +37,19 @@ router.post(
     if (order.status === Orderstatus.Cancelled)
       throw new BadRequestError('Order has been cancelled');
 
-    res.send({ success: true });
+    const charge = await stripe.charges.create({
+      currency: 'eur',
+      amount: order.price * 100,
+      source: token,
+    });
+
+    const payment = Payment.createPayment({
+      orderId,
+      stripeId: charge.id,
+    });
+    await payment.save();
+
+    res.status(201).send({ success: true });
   }
 );
 

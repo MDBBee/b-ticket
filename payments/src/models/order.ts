@@ -43,15 +43,16 @@ const orderSchema = new mongoose.Schema(
 orderSchema.set('versionKey', 'version');
 orderSchema.plugin(updateIfCurrentPlugin);
 
-orderSchema.statics.createOrder = (inputs: OrderAttributes) =>
-  new Order({
+orderSchema.statics.createOrder = (inputs: OrderAttributes) => {
+  return new Order({
     _id: inputs.id,
     version: inputs.version,
     price: inputs.price,
     userId: inputs.userId,
     status: inputs.status,
   });
+};
 
-const Order = mongoose.model<OrderDoc, OrderModel>('order', orderSchema);
+const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
 export { Order };
