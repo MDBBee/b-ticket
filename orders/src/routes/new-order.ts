@@ -39,8 +39,7 @@ router.post(
     // Ticket reserved?:>query orders where ticketId=ticket.id&&>order.staus!=="cancelled">
     const existingOrder = await ticket.isReserved();
 
-    if (existingOrder)
-      throw new BadRequestError('Ticket is unavailable at the moment');
+    if (existingOrder) throw new BadRequestError('Ticket has been reserved.');
 
     // Calc order-expiration date
     const expiration = new Date();
@@ -66,6 +65,9 @@ router.post(
       version: order.version,
       ticket: { id: ticket.id, price: ticket.price },
     });
+
+    console.log('NEWORDER-ORDERPUBLISHER', ticket);
+
     res.status(201).send(order);
   }
 );

@@ -17,7 +17,7 @@ const TicketShow = ({ ticket }) => {
       <h4>Price: {ticket.price}</h4>
       {errors}
       <button
-        onClick={doRequest}
+        onClick={() => doRequest()}
         style={{ marginTop: '4px' }}
         className="btn btn-primary"
       >
