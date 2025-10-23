@@ -3,7 +3,6 @@ import {
   NotAuthorizedError,
   NotFoundError,
   Orderstatus,
-  Publisher,
   requireAuth,
   validateRequest,
 } from '@b-tickets/common';
