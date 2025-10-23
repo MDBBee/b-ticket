@@ -66,8 +66,6 @@ router.post(
       ticket: { id: ticket.id, price: ticket.price },
     });
 
-    console.log('NEWORDER-ORDERPUBLISHER', ticket);
-
     res.status(201).send(order);
   }
 );

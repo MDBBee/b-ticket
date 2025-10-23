@@ -2,7 +2,11 @@ import Link from 'next/link';
 
 const Header = ({ currentUser }) => {
   const links = currentUser
-    ? [{ label: 'Sign Out', href: '/auth/signout' }]
+    ? [
+        { label: 'Sign Out', href: '/auth/signout' },
+        { label: 'Sell Tickets', href: '/tickets/new-ticket' },
+        { label: 'My orders ', href: '/orders' },
+      ]
     : [
         { label: 'Sign Up', href: '/auth/signup' },
         { label: 'Sign In', href: '/auth/signin' },

@@ -29,9 +29,9 @@ const start = async () => {
       process.env.NATS_CLIENT_ID,
       process.env.NATS_URI
     );
+    const client = natsWrapper.client;
 
     // For gracefull exit of the client-start
-    const client = natsWrapper.client;
     client.on('close', () => {
       console.log('Nats connection closed');
       process.exit();
@@ -41,8 +41,8 @@ const start = async () => {
     // For gracefull exit of the client-end
 
     // Listeners --Start
-    new OrderCreatedListener(natsWrapper.client).listen();
-    new OrderCancelledListener(natsWrapper.client).listen();
+    new OrderCreatedListener(client).listen();
+    new OrderCancelledListener(client).listen();
     // Listeners --End
 
     await mongoose.connect(process.env.MONGO_URI);
