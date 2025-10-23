@@ -91,35 +91,33 @@ it('responds with a "204" when valid inputs are submitted', async () => {
   expect(chargeOptions.currency).toEqual('eur');
 });
 
-// it('responds with order', async () => {
-//   const userId = new mongoose.Types.ObjectId().toHexString();
+it('responds with order', async () => {
+  const userId = new mongoose.Types.ObjectId().toHexString();
 
-//   const order = Order.createOrder({
-//     id: new mongoose.Types.ObjectId().toHexString(),
-//     userId,
-//     version: 0,
-//     price: 15,
-//     status: Orderstatus.Created,
-//   });
-//   await order.save();
+  const order = Order.createOrder({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    userId,
+    version: 0,
+    price: 15,
+    status: Orderstatus.Created,
+  });
+  await order.save();
 
-//   console.log('ORDER', order);
+  const res = await request(app)
+    .post('/api/payments')
+    .set('Cookie', global.signin(userId))
+    .send({
+      token: testTokenStripe,
+      orderId: order.id,
+    })
+    .expect(201);
 
-//   const res = await request(app)
-//     .post('/api/payments')
-//     .set('Cookie', global.signin(userId))
-//     .send({
-//       token: testTokenStripe,
-//       orderId: order._id,
-//     })
-//     .expect(201);
+  console.log('RES', res.body);
 
-//   console.log('RES', res.body);
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: res.body.payment.stripeId,
+  });
 
-//   const payment = await Payment.findOne({
-//     orderId: order.id,
-//     stripeId: res.body.id,
-//   });
-
-//   expect(payment).not.toBeNull();
-// });
+  expect(payment).not.toBeNull();
+});
