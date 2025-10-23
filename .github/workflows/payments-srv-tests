@@ -1,0 +1,11 @@
+name: payments-srv-tests
+
+on:
+  pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd payments && npm i && npm run test:ci
